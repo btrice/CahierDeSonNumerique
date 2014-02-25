@@ -75,14 +75,22 @@
 	
 	Vous travailler sur un fichier ou 2 fichiers ou plus ....
 	
-	Ajouter le fichier a votre branche afin que git puisse le suivre
+	pour un fichier: répéter la commande 1 et 2 à chaque fois que vous voulez soumettre une modification
+	***************
+					Vous avez fait des modifications sur un fichier
+					Ajouter le fichier a votre branche afin que git puisse le suivre
+					1#Commande:
+								git add <nom_du_fichier>
+								
+					 
+					vous voulez que git tienne compte de cette modification dans votre depot LOCAL.
+					2#Commande:
+								git commit -m 'message decrivant la modification' 
+								
+	Sinon si vous aviez modifier plusieurs fichiers unitile de répter la commande 1 et 2 précédente  utiliser la commande suivante
+	*******************
 	Commande:
-				git add <nom_du_fichier>
-				
-	Vous avez fait des modifications sur un fichier 
-	vous voulez que git tienne compte de cette modification dans votre depot LOCAL.
-	Commande:
-				git commit -m 'message decrivant la modification' <nom_du_fichier_ayant_été_modifier>
+				git commit -a -m ‘message decrivant la modification’
 				
 	
 	vous voulez que git tienne compte de cette modification dans votre depot DISTANT sur le serveur web de github.
