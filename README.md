@@ -15,7 +15,7 @@
 3#  le projet 
 ===================================
 
-	voici le lien du depot du projet:
+	voici le lien du depot du projet: https://github.com/SupGalileeGroupe4/CahierDeSonNumerique
 	il comporte 4 branche, chacun de nous travaillera sur une branche
 	on évitera de travailler sur le même fichier afin de faciliter la gestion 
 	des confusions
