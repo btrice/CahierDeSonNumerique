@@ -60,7 +60,10 @@
 	
 	Mise à jour de votre depôt local avec votre depôt distant
 	Commande :
-			git pull origin master
+			git remote add mondepotdistant git@github.com:/login/CahierDeSonNumerique.git
+			git pull  mondepotdistant master
+			
+			(remote permet de créer des alias avec des projets distant)
 	
 	Vous aurez maintenant accès aux autre branches du dépots Original du projet réalisé par les autres membres du projet.
 	
