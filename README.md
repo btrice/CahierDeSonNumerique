@@ -40,7 +40,7 @@
 	votre_nom_utilisateur: est votre login qui vous permet de vous connecté sur github
 	
 	git clone git@github.com:votre_nom_utilisateur/CahierDeSonNumerique.git
-	cd domogik
+	cd CahierDeSonNumerique
 	
 	=======
 	
@@ -52,14 +52,17 @@
 	
 	===============
 	
-	Mise à jour du dépôt local forké depuis le dépôt d’origine
+	Mise à jour de votre dépôt distant depuis le dépôt d’origine du projet
 	Il suffit de faire un fetch sur l’alias du dépôt d’origine :
 	Commande:
 	
 	git fetch upstream
 	
-	Vous aurez maintenant accès aux branches du dépots Original du projet.
-	(Vous aurez accès au travail ou partir réaliser par les autres membres du projet )
+	Mise à jour de votre depôt local avec votre depôt distant
+	Commande :
+			git pull origin master
+	
+	Vous aurez maintenant accès aux autre branches du dépots Original du projet réalisé par les autres membres du projet.
 	
 ===========================================
 6#	Réaliser votre tâche sur une branche
