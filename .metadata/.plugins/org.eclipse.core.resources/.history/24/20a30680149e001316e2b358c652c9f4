@@ -1,0 +1,25 @@
+package com.example.test;
+
+public class Eleve extends Utilisateur{
+
+	private String surnom;
+	
+	public Eleve(String prenom){
+		super(prenom);
+	}
+	
+	public Eleve(String nom, String prenom, String pass,String surnom) {
+		super(nom, prenom, pass);
+		this.surnom=surnom;
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getSurnom(){
+		return this.surnom;
+	}
+	
+	public void setSurnom(String surnom){
+		this.surnom=surnom;
+	}
+
+}

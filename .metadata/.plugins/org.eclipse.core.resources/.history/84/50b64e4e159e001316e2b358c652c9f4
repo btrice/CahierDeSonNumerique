@@ -1,0 +1,95 @@
+package com.example.cahierdeson;
+import java.sql.*;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+public class BDCahierDeSon extends SQLiteOpenHelper {
+	//requete pour creer la table eleve
+	private static final String  QUERY_CREATE_ELEVES="create table ELEVES (" +
+			"id_eleve integer primary key autoincrement," +
+			"nom TEXT ," +
+			"prenom TEXT ,"+
+			"surnom TEXT,"+
+			"mot_de_passe TEXT,"+
+			"classe text,"+
+			"lien_photo_profil TEXT "+
+			
+			")";
+	
+	//requete pour créer la table module
+	
+	private static final String QUERY_CREATE_MODULES=" create table modules(" +
+			"id_module INTEGER primary key autoincrement," +
+			"grepheme text not NULL," +
+			"lien_image TEXT," +
+			"lien_son TEXT," +
+			"lien_video TEXT," +
+			"date_creation DATE," +
+			"id_eleve INTEGER references eleves"+
+			")";
+	
+    //constructeur , creation de la base de données
+	public BDCahierDeSon(Context c, String name, CursorFactory factory, int version) {
+        super(c, name, factory, version);
+         
+
+                 
+    }
+     
+    // à la création de tables de la base de données
+  
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		// TODO Auto-generated method stub
+		
+		
+		
+		try {
+
+              db.execSQL(this.QUERY_CREATE_ELEVES);   //execution des requêtes creation eleves
+              db.execSQL(this.QUERY_CREATE_MODULES); //  ---      ------     ------     modules
+            
+              
+            Log.i("BDD sqlite", "Création réussi");
+            //Log.i("strucure", msg)
+             
+        } catch (Exception ex) {
+          ex.printStackTrace();
+          Log.i("BDD sqlite", "Création échouée");
+        }	
+		
+	}//fin oncreate
+
+	@Override
+	public void onUpgrade(SQLiteDatabase arg0, int arg1, int arg2) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*public static void main (String argv[]){
+		//tester la base de données
+		
+		BDCahierDeSon bd=new BDCahierDeSon(null,"bd_cahier_son",null, 1);
+		Cursor cursor=bd.getReadableDatabase().rawQuery("describe modules",null);
+		
+		 if (cursor.getCount() > 0) // Du moins, s'il y en a !
+	        {               
+	        	cursor.moveToFirst(); // On se positionne sur le premier
+	            do {
+	            	Log.d("",cursor.toString());
+	            } while (cursor.moveToNext()); // Puis sur les suivants
+	            cursor.close(); // Fermeture du curseur
+	        }
+		
+		
+		
+		//on va afficher le dscibe de chauqe table de la bd
+		
+	}
+*/
+}

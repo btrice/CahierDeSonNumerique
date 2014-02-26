@@ -1,0 +1,83 @@
+package com.example.cahierdeson;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.view.Menu;
+import android.widget.Toast;
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        
+        /*******************************************/
+        //Création d'une instance de ma classe EleveBDD
+        //ElevesBDD elevesbdd = new ElevesBDD(this);
+       BDCahierDeSon maBaseSQLite = new BDCahierDeSon(this, "cahierdeson.db", null, 1);
+       SQLiteDatabase bdd=maBaseSQLite.getReadableDatabase();
+       Cursor cur=bdd.rawQuery("select name as _id from sqlite_master where type='table'",null) ; 
+       Toast.makeText(this, cur.toString(), Toast.LENGTH_LONG).show();
+       
+        //Création d'un eleve String nom, String prenom, String pass,String surnom,String classe) 
+        Eleve eleve = new Eleve( "amel","krouma","h%jj","ammoula","cm1");
+        
+        //On ouvre la base de données pour écrire dedans
+        //elevesbdd.open();
+        //On insère l'eleve que l'on vient de créer
+        //elevesbdd.insertEleve(eleve);
+ 
+        //Pour vérifier que l'on a bien créé notre eleve dans la BDD
+        //on extrait le livre de la BDD grâce au prenom de l'eve par exemple que l'on a créé précédemment
+        /*Eleve eleveFromBdd = elevesbdd.getEleveWith("prenom","moussa");
+        //Si un eleveest retourné (donc si l'eleve à bien été ajouté à la BDD)
+        if(eleveFromBdd != null){
+        	//On affiche les infos de l'eleve dans un Toast
+        	Toast.makeText(this, eleveFromBdd.toString(), Toast.LENGTH_LONG).show();
+        	//On modifie le nom du l eleve
+        	eleveFromBdd.setPrenom("J'ai modifié le prenom de l'eleve");
+        	//Puis on met à jour la BDD
+            elevesbdd.updateEleves(eleveFromBdd.getId(),eleveFromBdd);
+        }
+ 
+        //On extrait l'eleve de la BDD grâce au nouveau prenom
+        eleveFromBdd = elevesbdd.getEleveWith("prenom","moussa");
+        //S'il existe un livre possédant ce titre dans la BDD
+        if(eleveFromBdd != null){
+	        //On affiche les nouvelle info de l'eleve pour vérifier que son prenom  a bien été mis à jour
+	        Toast.makeText(this, eleveFromBdd.toString(), Toast.LENGTH_LONG).show();
+	        //on supprime l'eleve de la BDD grâce à son ID
+	        elevesbdd.removeEleveWithID(eleveFromBdd.getId());
+        }
+ 
+        //On essait d'extraire de nouveau l'eleve de la BDD toujours grâce à son nouveau prenom
+        eleveFromBdd = elevesbdd.getEleveWith("prenom","moussa");
+        //Si aucun livre n'est retourné
+        if(eleveFromBdd == null){
+        	//On affiche un message indiquant que l'eleve n'existe pas dans la BDD
+        	Toast.makeText(this, "Cet élève n'existe pas dans la BDD", Toast.LENGTH_LONG).show();
+        }
+        //Si l'eleve existe (mais normalement il ne devrait pas)
+        else{
+        	//on affiche un message indiquant que le livre existe dans la BDD
+        	Toast.makeText(this, "Cet élève existe dans la BDD", Toast.LENGTH_LONG).show();
+        }
+ 
+        elevesbdd.close();*/
+    }
+        
+        /********************************************/
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
+}

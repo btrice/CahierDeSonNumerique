@@ -1,0 +1,84 @@
+package com.example.cahierdeson;
+
+import android.os.Bundle;
+import android.app.Activity;
+import android.view.Menu;
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        
+        /*******************************************/
+        //Création d'une instance de ma classe EleveBDD
+        ElevesBDD elevesbdd = new ElevesBDD(this);
+ 
+        //Création d'un eleve String nom, String prenom, String pass,String surnom,String classe) 
+        Eleve eleve = new Eleve( "amel","krouma","h%jj","ammoula","cm1");
+ 
+        //On ouvre la base de données pour écrire dedans
+        elevesbdd.open();
+        //On insère l'eleve que l'on vient de créer
+        elevesbdd.insertEleve(eleve);
+ 
+        //Pour vérifier que l'on a bien créé notre eleve dans la BDD
+        //on extrait le livre de la BDD grâce au prenom de l'eve par exemple que l'on a créé précédemment
+        Eleve eleveFromBdd = elevesbdd.getEleveWith("prenom",eleve.getPrenom());
+        //Si un eleveest retourné (donc si l'eleve à bien été ajouté à la BDD)
+        if(livreFromBdd != null){
+        	//On affiche les infos du livre dans un Toast
+        	Toast.makeText(this, livreFromBdd.toString(), Toast.LENGTH_LONG).show();
+        	//On modifie le titre du livre
+        	livreFromBdd.setTitre("J'ai modifié le titre du livre");
+        	//Puis on met à jour la BDD
+            livreBdd.updateLivre(livreFromBdd.getId(), livreFromBdd);
+        }
+ 
+        //On extrait le livre de la BDD grâce au nouveau titre
+        livreFromBdd = livreBdd.getLivreWithTitre("J'ai modifié le titre du livre");
+        //S'il existe un livre possédant ce titre dans la BDD
+        if(livreFromBdd != null){
+	        //On affiche les nouvelle info du livre pour vérifié que le titre du livre a bien été mis à jour
+	        Toast.makeText(this, livreFromBdd.toString(), Toast.LENGTH_LONG).show();
+	        //on supprime le livre de la BDD grâce à son ID
+	    	livreBdd.removeLivreWithID(livreFromBdd.getId());
+        }
+ 
+        //On essait d'extraire de nouveau le livre de la BDD toujours grâce à son nouveau titre
+        livreFromBdd = livreBdd.getLivreWithTitre("J'ai modifié le titre du livre");
+        //Si aucun livre n'est retourné
+        if(livreFromBdd == null){
+        	//On affiche un message indiquant que le livre n'existe pas dans la BDD
+        	Toast.makeText(this, "Ce livre n'existe pas dans la BDD", Toast.LENGTH_LONG).show();
+        }
+        //Si le livre existe (mais normalement il ne devrait pas)
+        else{
+        	//on affiche un message indiquant que le livre existe dans la BDD
+        	Toast.makeText(this, "Ce livre existe dans la BDD", Toast.LENGTH_LONG).show();
+        }
+ 
+        livreBdd.close();
+    }
+        
+        /********************************************/
+    }
+
+    
+    
+    
+    
+    
+    
+    
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
+}
