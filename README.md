@@ -101,7 +101,8 @@
 	
 	vous voulez que git tienne compte de cette modification dans votre depot DISTANT sur le serveur web de github.
 	Commande:		
-				git push origin <le_nom_explicite_de_ma_branche_ou_nom_de_la_tache>
+				git remote add mondepotdistant git@github.com:/login/CahierDeSonNumerique.git
+				git push mondepotdistant <le_nom_explicite_de_ma_branche_ou_nom_de_la_tache>
 	
 
 =================================================================
