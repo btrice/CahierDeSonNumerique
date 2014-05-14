@@ -1,0 +1,120 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graphemeson"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:orientation="vertical"
+    tools:context="vues.Enregistrer_Son" >
+
+    <requestFocus android:layout_width="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/boutonEnregistrer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="100dp"
+        android:src="@drawable/micoff"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonSaveson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/graphemeCourant"
+        android:layout_below="@+id/boutonGrapheme"
+        android:layout_marginRight="23dp"
+        android:src="@drawable/save"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonHome"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="23dp"
+        android:src="@drawable/kid" />
+
+    <ImageButton
+        android:id="@+id/boutonEcouterson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/boutonGrapheme"
+        android:layout_alignLeft="@+id/boutonSaveson"
+        android:src="@drawable/play"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonGrapheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonVideo"
+        android:layout_toRightOf="@+id/graphemeCourant"
+        android:src="@drawable/grapheme"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonReferente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="41dp"
+        android:layout_toRightOf="@+id/graphemeCourant"
+        android:src="@drawable/referente"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonReferente"
+        android:layout_alignLeft="@+id/boutonReferente"
+        android:src="@drawable/camera"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonImage"
+        android:layout_toRightOf="@+id/graphemeCourant"
+        android:src="@drawable/video"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonEcouterson"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/menu"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/graphemeCourant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_marginRight="108dp"
+        android:layout_toLeftOf="@+id/boutonHome"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/boutonEnregistrer"
+        android:layout_alignTop="@+id/imageView1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+</RelativeLayout>

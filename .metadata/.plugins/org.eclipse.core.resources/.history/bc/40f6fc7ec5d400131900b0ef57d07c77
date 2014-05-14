@@ -1,0 +1,472 @@
+package vues;
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Random;
+import com.example.cahierdeson.MainActivity;
+import com.example.cahierdeson.R;
+import BD.ElevesBDD;
+import BD.ModulesBDD;
+import Modeles.AlertTrue;
+import Modeles.Eleve;
+import Modeles.Module;
+import android.media.AudioFormat;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.os.Bundle;
+import android.os.Environment;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+//  android:visibility="gone"
+@TargetApi(19) public class Enregistrer_Son extends Activity {
+	protected static final String LOG_TAG = "MODULE_SON";
+	private ImageButton btrecord, btecouter, btsave, btnaccueil;
+	private TextView mot,nomconect;
+	private MediaPlayer play;
+	private MediaRecorder record;
+	private int statusrecord=0; // (o or 1)  pour gerer l'image mic à afficher
+	private int statusecoute=0; // (o or 1)   pour gerer l'image play/pause à afficher
+	private int statussaveson=0; // (o or 1)  pour savoir si il a enregistré ou pas
+	private int statusmicon=0;
+	private String Fichieraudio;
+	private String filepath;
+	private  String filename;
+	public  static Eleve eleveConnecte=MainActivity.eleveConnecte;
+	public  static Module moduleCourant=MainActivity.moduleCourant;
+	private  AlertDialog.Builder  builder;
+	private int clickrecord=0;
+	
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setContentView(R.layout.enregistrer_son);
+        
+        
+        
+        
+       btrecord = (ImageButton) findViewById(R.id.boutonEnregistrer); 
+       btrecord.setVisibility(View.VISIBLE);
+       
+       btecouter = (ImageButton) findViewById(R.id.boutonEcouterson);
+       btecouter.setVisibility(View.INVISIBLE);
+       
+       btsave = (ImageButton) findViewById(R.id.boutonSaveson);
+       btsave.setVisibility(View.INVISIBLE);
+      
+       
+       btnaccueil= (ImageButton) findViewById(R.id.boutonHome);
+       mot = (TextView) findViewById(R.id.graphemeCourant);
+       nomconect = (TextView) findViewById(R.id.labelEleveConnecte);
+       // graphème
+       mot.setText(moduleCourant.getGrapheme());
+       // nom de l'élève
+       nomconect.setText(eleveConnecte.getPrenom());
+   
+       // creéer le repertoire CahierDeSon/classe_annee/prenom/Son/ s'il existe pas
+       chemin("Son");   
+       
+       btnaccueil.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				// on verifie s'il a enregistré mais pas sauvegarder
+				if(statusmicon==1 && statussaveson==0)
+				{
+					// boite de message voulez vous sauvegarder ? Yes No 
+					String t="Vouler vous sauvegarder le son du graphème "+moduleCourant.getGrapheme()+"?";
+					boite_de_dialogue("Confirmation",t,1);
+					AlertDialog alert = builder.create();
+				    alert.show();
+						
+				}
+				
+				// soit il a enregister et sauvegarder ou pas du tout.
+				if((statusmicon==0 && statussaveson==0) || (statusmicon==1 && statussaveson==1) )
+				{
+				   Intent intent = new Intent(Enregistrer_Son.this,Accueil.class);
+				   startActivity(intent);
+			       overridePendingTransition(R.anim.slide_out,R.anim.slide_in);
+				}
+				
+			}});
+      
+        
+        
+        btrecord.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				clickrecord=clickrecord+1;
+				if(clickrecord<3)
+				{
+				   enregistrer();
+				}
+				else
+				{
+					String t="Voulez vous recommencer l'enregistrement du graphème "+moduleCourant.getGrapheme()+"?";
+					boite_de_dialogue("Confirmation",t,2);
+					AlertDialog alert = builder.create();
+				    alert.show();
+				   
+				}
+				
+			}
+		});
+        
+btecouter.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+			
+				/*if(statusecoute == 0)
+				{*/
+					Toast.makeText(Enregistrer_Son.this,"Debut du son", Toast.LENGTH_SHORT).show();
+					//btecouter.setImageResource(R.drawable.pause);
+					
+					if(btrecord.getVisibility()==View.VISIBLE)
+					{	
+						// on masque record pendant quil ecoute
+						btrecord.setVisibility(View.INVISIBLE);
+						btsave.setVisibility(View.VISIBLE);
+						
+					
+					}
+					
+					try {
+						//startPlayback();
+						statusecoute=1;
+						startPlay();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						//Log.e(LOG_TAG, "IllegalArgumentException :", e);
+						
+					}
+					
+					if(btrecord.getVisibility()==View.INVISIBLE)
+					{	
+						// on masque record pendant quil ecoute
+						btrecord.setVisibility(View.VISIBLE);
+					}
+			
+				
+					
+			}
+			
+	});
+
+
+// entregistrement du son dans la base de donnée
+btsave.setOnClickListener(new View.OnClickListener() {
+
+	@Override
+	public void onClick(View v) {
+		
+		saveSon();	
+		
+	}
+  });
+
+        
+    }
+    
+    private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
+        @Override
+        public void onInfo(MediaRecorder mr, int what, int extra) {
+        	
+        	if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
+        		//stopRecorder();
+        		// on affiche ecouter et sauvegarder
+        		// on désactive le micro
+        		mr=null;
+        	btrecord.setImageResource(R.drawable.micoff);
+			
+			btecouter.setVisibility(View.VISIBLE);
+			btsave.setVisibility(View.VISIBLE);
+	        
+			statusrecord=0;
+        		
+            Toast.makeText(Enregistrer_Son.this, "Warning: Temps écoulé " + what/100 + " séconde.... ", Toast.LENGTH_SHORT).show();
+        }
+      }
+    };
+  
+    
+    public void startRecorder() throws IllegalStateException, IOException 
+    {
+    	if(record!= null)
+    	{
+    		record.release();
+    	}
+    	
+        record = new MediaRecorder();
+    	record.setAudioSource(MediaRecorder.AudioSource.MIC);
+    	record.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+    	record.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+    	//record.setAudioEncoder(MediaRecorder.getAudioSourceMax());
+    	record.setMaxDuration(7000); // 7s
+    	record.setAudioEncodingBitRate(16);
+    	record.setAudioSamplingRate(44100);
+    	record.setOutputFile(Fichieraudio);
+    	record.setOnInfoListener(infoListener);
+    	record.prepare();
+    	try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	record.start();
+    	
+    }
+    
+    
+    
+   
+    public void stopRecorder()
+    {
+    	
+    	record.stop();
+    	record.reset();
+    	record.release();
+    	record = null;
+    	
+    }
+ 
+    public void startPlay() throws Exception
+    {
+    	if(play!=null)
+    	{
+    		try
+    		{
+    			play.release();
+    		}catch( Exception e)
+    		{
+    			e.printStackTrace();
+    		}
+    	}
+    	play = new MediaPlayer();
+    	play.setDataSource(Fichieraudio);
+    	play.prepare();
+    	play.start();
+    	
+    }
+    
+    public void stopPlayback()
+    {
+    	if(play.isPlaying())
+          play.stop();
+    	
+    	
+    	
+    	
+    }
+  
+    
+  //CahierDeSon/classe_annee/prenom/dossier/son.3gpp
+   // dossier peu être : son, image ou videos
+    public void chemin(String dossier)
+    {
+    	// on recupère l'année courante car /CLASSE_AnneeCourante/
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        
+          filepath =Environment.getExternalStorageDirectory()+"/"+"CahierDeSon"+"/"+eleveConnecte.getClasse()+"_"+year+"/"+eleveConnecte.getPrenom()+"/"+dossier;
+          
+          if(!(new File(filepath)).exists()) 
+        	  new File(filepath).mkdirs();
+          
+         
+          filename = moduleCourant.getGrapheme()+".3GPP";
+        
+        Fichieraudio = filepath+"/"+filename;
+    }
+    
+   
+   public void enregistrer()
+   {
+	   if(statusrecord == 0)
+		{
+			Toast.makeText(Enregistrer_Son.this,"Debut de l'enregistrement", Toast.LENGTH_SHORT).show();
+			btrecord.setImageResource(R.drawable.micon);
+			
+			
+			// test de visibiliter si visible 
+			if(btecouter.getVisibility()==View.VISIBLE)
+			{	
+				btecouter.setVisibility(View.INVISIBLE);
+				btsave.setVisibility(View.INVISIBLE);
+				deleteSon();
+				
+			
+			}
+			
+			// debut de l'enregistrement
+			try {
+				statusmicon=1;
+				startRecorder();
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				Log.e(LOG_TAG, "IllegalStateException :", e);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+				Log.e(LOG_TAG, "Aidara :"+ Fichieraudio, e);
+			     
+			
+			}
+			
+			
+			statusrecord=1;
+			
+		}else
+		{
+			stopRecorder();
+			Toast.makeText(Enregistrer_Son.this,"Arrêt de l'enregistrement", Toast.LENGTH_SHORT).show();
+			btrecord.setImageResource(R.drawable.micoff);
+		
+			btecouter.setVisibility(View.VISIBLE);
+			
+	        
+			statusrecord=0;
+		}
+   }
+   
+   // pour sauvegarder le son dans la bd
+   public void saveSon()
+   {
+	   
+		moduleCourant.setLienSon(Fichieraudio);
+		ModulesBDD M = new ModulesBDD(Enregistrer_Son.this);
+		M.open();
+		M.updateModules(moduleCourant.getGrapheme(),eleveConnecte.getPrenom(), moduleCourant);
+		statussaveson=1;
+		M.close();
+		Toast.makeText(Enregistrer_Son.this,"Sauvegarde reuissir", Toast.LENGTH_SHORT).show();
+		
+   }
+   public void deleteSon()
+   {
+	   File fileout = new File(Fichieraudio);
+   	
+	   	if(fileout!= null )
+	   	{
+	   		fileout.delete();
+	   		statusmicon=0;
+	   	}
+   }
+   public void boite_de_dialogue(String titre,String msg,final int i)
+   {
+   	
+   	builder = new AlertDialog.Builder(Enregistrer_Son.this);
+       
+       builder.setTitle(titre);
+       builder.setMessage(msg);
+        
+       builder.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+        
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+                
+              
+        	  Intent intent;
+              
+              switch(i)
+              {
+                  
+                case 1:  // aon verifie qu'il a ecouté le son avant la sauvegarde
+                	    if(statusecoute==0)
+                	    {
+                	    	btsave.setVisibility(View.VISIBLE);
+                	    	try {
+        						//startPlayback();
+        						statusecoute=1;
+        						startPlay();
+        					} catch (Exception e) {
+        						// TODO Auto-generated catch block
+        						e.printStackTrace();
+        						//Log.e(LOG_TAG, "IllegalArgumentException :", e);
+        						
+        					}
+                	    	Toast.makeText(Enregistrer_Son.this,"Ecouter le son....", Toast.LENGTH_SHORT).show();
+                	    }
+                	    else
+                	    {
+                	     // on enregistre le fichier audio dans la bd et sur le disque
+                		 saveSon();
+                		 dialog.dismiss();
+                		 // on va au menu accueil 
+                		 intent = new Intent(Enregistrer_Son.this,Accueil.class);
+ 				         startActivity(intent);
+                	    }break;
+ 				       
+ 				        
+                case 2:  //  créer un nouveau fichier audio (modification)
+                	
+                	//enregistrer();
+                	 clickrecord=0;
+                	 statusecoute=0;
+                	btrecord.setVisibility(View.VISIBLE);
+                	btecouter.setVisibility(View.INVISIBLE);
+                	btsave.setVisibility(View.INVISIBLE);
+            	    dialog.dismiss();
+                		;break;
+ 				 	  
+ 				
+ 				 	  
+ 			   default: break;
+              }
+              
+             
+           // dialog.dismiss();   
+			    
+          }
+        
+       });
+       builder.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+           
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+         
+        	   Intent intent;
+         	    if(i==1)
+         	    {
+         	    	 // on supprime le fichier audio du disque
+            	    deleteSon();
+         	    	// on va au menu accueil 
+           		 intent = new Intent(Enregistrer_Son.this,Accueil.class);
+			         startActivity(intent); 
+         	    }
+         	   if(i==2)
+        	    {
+         		  clickrecord=3;
+        	    }
+         	    dialog.dismiss();
+         	  
+               
+           }
+         
+        });
+       
+      
+			
+        
+   }
+   
+    
+}
+

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:orientation="horizontal" >
+
+    <ImageButton
+        android:id="@+id/take"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/labelEleveConnecte"
+        android:layout_alignTop="@+id/camera_preview"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/take" />
+
+    <ImageButton
+        android:id="@+id/retake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/camera_preview"
+        android:layout_alignLeft="@+id/take"
+        android:src="@drawable/retake" />
+
+    <ImageButton
+        android:id="@+id/enregistrerPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/graphemeCourant"
+        android:layout_marginLeft="105dp"
+        android:layout_marginTop="174dp"
+        android:layout_toRightOf="@+id/camera_preview"
+        android:src="@drawable/save" />
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="49dp"
+        android:layout_toRightOf="@+id/labelEleveConnecte" >
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/enregistrerPhoto"
+        android:layout_marginLeft="35dp"
+        android:layout_toRightOf="@+id/imageView1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+           android:layout_marginRight="15dp"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/boutonReferente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="51dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/referente"
+            android:paddind="10dp" />
+
+        <ImageButton
+            android:id="@+id/boutonGrapheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+              android:background="@drawable/grapheme"
+            android:paddind="10dp" />
+
+        <ImageButton
+            android:id="@+id/boutonHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+         
+            android:background="@drawable/menu"
+            android:paddind="10dp"  />
+
+        <ImageButton
+            android:id="@+id/boutonVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             android:background="@drawable/video"
+            android:paddind="10dp"  />
+
+        <ImageButton
+            android:id="@+id/boutonSon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+             android:background="@drawable/son"
+            android:paddind="10dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/graphemeCourant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/linearLayout1"
+        android:layout_toRightOf="@+id/camera_preview"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/kid"
+        android:padding="50dp" />
+
+</RelativeLayout>

@@ -1,0 +1,129 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graphemeson"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:orientation="vertical"
+    tools:context="vues.Enregistrer_Son" >
+
+    <requestFocus android:layout_width="wrap_content" />
+
+    <ImageButton
+        android:id="@+id/boutonGrapheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/boutonHome"
+        android:layout_centerVertical="true"
+   android:background="@drawable/grapheme"
+        tools:ignore="ContentDescription"
+        android:layout_marginRight="14dp"
+        android:padding="40dp" />
+
+    <ImageButton
+        android:id="@+id/boutonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/graphemeCourant"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/menu"
+        android:padding="40dp"
+        tools:ignore="ContentDescription" 
+         android:layout_marginRight="14dp"/>
+
+    <ImageButton
+        android:id="@+id/boutonEnregistrer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="86dp"
+        android:layout_toRightOf="@+id/imageView1"
+        android:src="@drawable/micoff"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/graphemeCourant"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="42dp"
+        android:background="@drawable/kid"
+        android:padding="50dp" />
+
+    <ImageButton
+        android:id="@+id/boutonSaveson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/boutonEcouterson"
+        android:layout_marginLeft="152dp"
+        android:layout_toRightOf="@+id/boutonEcouterson"
+        android:src="@drawable/save"
+         android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonEcouterson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="118dp"
+        android:layout_toRightOf="@+id/boutonEnregistrer"
+        android:src="@drawable/play"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonReferente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/boutonGrapheme"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/referente"
+        android:padding="40dp"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonReferente"
+        android:layout_alignLeft="@+id/boutonReferente"
+        android:background="@drawable/camera"
+        android:padding="40dp"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonEnregistrer"
+        android:layout_alignLeft="@+id/boutonGrapheme"
+        android:background="@drawable/video"
+        android:padding="40dp"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/graphemeCourant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonVideo"
+        android:layout_alignRight="@+id/boutonEnregistrer"
+        android:layout_marginBottom="32dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/boutonHome"
+        android:layout_marginRight="201dp"
+        android:layout_toLeftOf="@+id/boutonHome"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+</RelativeLayout>

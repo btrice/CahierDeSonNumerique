@@ -1,0 +1,9 @@
+package vues;
+
+public class SauvegardeFusion {
+
+	public SauvegardeFusion() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

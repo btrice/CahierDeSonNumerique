@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:orientation="horizontal" >
+
+    <ImageButton
+        android:id="@+id/boutonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="85dp"
+        android:src="@drawable/menu" />
+
+    <ImageButton
+        android:id="@+id/boutonReferente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/boutonSon"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="51dp"
+        android:src="@drawable/referente" />
+
+    <ImageButton
+        android:id="@+id/boutonGrapheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonReferente"
+        android:layout_alignLeft="@+id/boutonReferente"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/grapheme" />
+
+    <ImageButton
+        android:id="@+id/boutonSon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/take"
+        android:layout_alignLeft="@+id/boutonImage"
+        android:src="@drawable/micro" />
+
+    <ImageButton
+        android:id="@+id/enregistrerPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="70dp"
+        android:layout_toRightOf="@+id/camera_preview"
+        android:src="@drawable/save" />
+
+    <ImageButton
+        android:id="@+id/take"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/enregistrerPhoto"
+        android:layout_marginLeft="90dp"
+        android:src="@drawable/record" />
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="600dp"
+        android:layout_height="470dp"
+        android:layout_alignBottom="@+id/boutonReferente"
+        android:layout_marginLeft="109dp"
+        android:layout_toRightOf="@+id/take" >
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/iconeActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/labelEleveConnecte"
+        android:layout_alignRight="@+id/enregistrerPhoto"
+        android:src="@drawable/video2" />
+
+    <ImageButton
+        android:id="@+id/boutonPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/take"
+        android:layout_alignTop="@+id/boutonGrapheme"
+        android:layout_toLeftOf="@+id/camera_preview"
+        android:src="@drawable/play" />
+
+    <ImageButton
+        android:id="@+id/boutonImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/take"
+        android:layout_alignLeft="@+id/boutonHome"
+        android:src="@drawable/camera" />
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="46dp"
+        android:layout_toRightOf="@+id/take"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/take"
+        android:layout_alignTop="@+id/labelEleveConnecte"
+        android:src="@drawable/kid" />
+
+    <TextView
+        android:id="@+id/graphemeCourant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/labelEleveConnecte"
+        android:layout_alignBottom="@+id/labelEleveConnecte"
+        android:layout_marginRight="67dp"
+        android:layout_toLeftOf="@+id/iconeActivity"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+</RelativeLayout>

@@ -3,6 +3,25 @@
 
     <string name="app_name">cahier de son</string>
     <string name="action_settings">Settings</string>
+    <string name="label_grapheme">Graphème</string>
+    <string name="label_recherche_grapheme">Recherche graphème</string>
+    <string name="boutonImage">imageButton6</string>
+    <string name="boutonTelecharger">imageButton2</string>
+    <string name="boutonHome">imageButton1</string>
+    <string name="boutonVideo">imageButton3</string>
+    <string name="boutonSon">imageButton4</string>
+    <string name="title_activity_profil">ProfilActivity</string>
+    <string name="title_activity_accueil">AccueilActivity</string>
+    <string name="title_activity_subscribe">Subscribe</string>
+
+    <string-array name="classes_array">
+        <item>CP</item>
+        <item>CE1</item>
+        <item>CE2</item>
+        <item>CM1</item>
+        <item>CM2</item>
+    </string-array>
+
     <string name="hello_world">Hello world!</string>
 
 </resources>

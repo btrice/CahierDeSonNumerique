@@ -1,0 +1,587 @@
+package vues;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import com.example.cahierdeson.MainActivity;
+import com.example.cahierdeson.R;
+import BD.ModulesBDD;
+import Modeles.AlertFalse;
+import Modeles.AlertTrue;
+import Modeles.Module;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.media.AudioFormat;
+import android.media.CamcorderProfile;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.SurfaceHolder;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+
+public class Enregistrer_Video extends Activity{
+
+
+		private AlertDialog.Builder confirmation;
+		private boolean sauvegarder=false;
+		private boolean videoPrise=false;
+		private boolean isPlaying=false;
+		private  ImageButton butonPlay;
+		private ImageButton butonValider;
+		private ImageButton captureButton;
+	   private Camera cameraObject;
+	   private ShowCamera showCamera;
+	   private MediaRecorder mMediaRecorder;
+	   private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	   public static final int MEDIA_TYPE_IMAGE = 1;
+	   public static final int MEDIA_TYPE_VIDEO = 2;
+	   private Uri fileUri;
+	   private byte[] data; //contiendra la photo prise
+	   private FrameLayout preview;
+	   private String lien_image;
+	   private boolean isRecording = false;
+	   private String lienVideo;
+	   private VideoView playVideoView;
+	   private PictureCallback mPicture = new PictureCallback() {
+
+		      @Override
+		      public void onPictureTaken(byte[] dat, Camera camera) {
+		    	  Toast.makeText(Enregistrer_Video.this,"photo prise+",Toast.LENGTH_LONG).show();
+		    	  data=dat;
+		    	 //Toast.makeText(Enregistrer_Video.this,"data takin picture+"+data,Toast.LENGTH_LONG).show();
+		    	 
+		    	  
+		      }
+		     // camera.release();
+		   };
+
+	   
+	   /** Check if this device has a camera */
+	   private boolean checkCameraHardware(Context context) {
+	       if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+	           // this device has a camera
+	           return true;
+	       } else {
+	           // no camera on this device
+	           return false;
+	       }
+	   }
+
+	   /** A safe way to get an instance of the Camera object. */
+	   public static Camera getCameraInstance(){
+		   Camera c=null ;
+		 
+	       try {
+	           c = Camera.open(); // attempt to get a Camera instance
+	       }
+	       catch (Exception e){
+	           // Camera is not available (in use or does not exist)
+	       }
+		   
+	       return c; // returns null if camera is unavailable
+	   }
+	   
+	   @Override
+	   protected void onCreate(Bundle savedInstanceState) {
+	      super.onCreate(savedInstanceState);
+	      setContentView(R.layout.enregistrer_video);
+	     // MainActivity.moduleCourant=new Module("wa","","","","","","walid");
+	      
+	      //pic = (ImageView)findViewById(R.id.imageView1);
+	      
+	      //label eleve couran
+	      TextView labelEleveCourant=(TextView)findViewById(R.id.labelEleveConnecte);
+	      labelEleveCourant.setText(MainActivity.eleveConnecte.getPrenom());   
+	      //label de grapheme courant  
+	      
+	      TextView graphemeCourant=(TextView)findViewById(R.id.graphemeCourant);
+	      if(MainActivity.moduleCourant!=null) graphemeCourant.setText(MainActivity.moduleCourant.getGrapheme());
+	      else graphemeCourant.setText("");
+	      //bouton de la barre de menu
+	      ActionnerBoutonMenu();
+	      playVideoView = (VideoView)findViewById(R.id.videoView);
+		  playVideoView.setVisibility(View.INVISIBLE);
+	      cameraObject = getCameraInstance();
+	      showCamera = new ShowCamera(this, cameraObject);
+	      preview = (FrameLayout) findViewById(R.id.camera_preview);
+	      preview.addView(showCamera);
+	      //buttons
+	      butonValider=(ImageButton) findViewById(R.id.enregistrerPhoto);
+	      captureButton = (ImageButton) findViewById(R.id.take);
+	      //hide buttons retake and valdate
+	      //butonRetake.setVisibility(View.INVISIBLE);
+	      butonValider.setVisibility(View.INVISIBLE);
+	      //bouton play
+	      butonPlay=(ImageButton) findViewById(R.id.boutonPlay);
+	      butonPlay.setVisibility(View.INVISIBLE);
+	      // Add a listener to the Capture button
+	      captureButton.setOnClickListener(
+	          new View.OnClickListener() {
+	              public void onClick(View v) {
+	            	  //Toast.makeText(Enregistrer_Video.this,"bouton de capture !",Toast.LENGTH_LONG).show();
+	            	  if (isRecording) {
+	                      // stop recording and release camera
+	                      mMediaRecorder.stop();  // stop the recording
+	                      releaseMediaRecorder(); // release the MediaRecorder object
+	                      cameraObject.lock();         // take camera access back from MediaRecorder
+
+	                      // inform the user that recording has stopped
+	                      Toast.makeText(Enregistrer_Video.this,"enregistrement fini",Toast.LENGTH_LONG).show();
+	                      //setCaptureButtonText("Capture");
+	                      captureButton.setImageResource(R.drawable.record);
+	                      butonValider.setVisibility(View.VISIBLE);
+	                      butonPlay.setVisibility(View.VISIBLE);
+	                      isRecording = false;
+	                      videoPrise=true;
+	                   
+	            	  }else if (isPlaying){
+	            		  Toast.makeText(Enregistrer_Video.this,"record after playing",Toast.LENGTH_LONG).show();
+	            		  preview.removeAllViews();
+	            		  showCamera = new ShowCamera(Enregistrer_Video.this, cameraObject);
+	          		      preview.addView(showCamera);
+	            		  if(prepareVideoRecorder()) {
+	            			  mMediaRecorder.start();
+	            			  isRecording = true;
+	                          captureButton.setImageResource(R.drawable.pause);
+	                          butonPlay.setVisibility(View.INVISIBLE);
+	            		  }
+	                      
+	                  } else {
+	                      // initialize video camera
+	                      if (prepareVideoRecorder()) {
+	                    	  Toast.makeText(Enregistrer_Video.this,"recording started",Toast.LENGTH_LONG).show();
+	                          // Camera is available and unlocked, MediaRecorder is prepared,
+	                          // now you can start recording
+	                    	  //Toast.makeText(Enregistrer_Video.this,"before recording started",Toast.LENGTH_LONG).show();
+	                          mMediaRecorder.start();
+	                          //Toast.makeText(Enregistrer_Video.this,"after recording started",Toast.LENGTH_LONG).show();
+	                          // inform the user that recording has started
+	                          //Toast.makeText(Enregistrer_Video.this,"recording started",Toast.LENGTH_LONG).show();
+	                         // setCaptureButtonText("Stop");
+	                          isRecording = true;
+	                          captureButton.setImageResource(R.drawable.pause);
+	                        
+	                      } else {
+	                          // prepare didn't work, release the camera
+	                          releaseMediaRecorder();
+	                          captureButton.setImageResource(R.drawable.record);
+	                          // inform user
+	                      }
+	              
+	                  }
+	              }
+	            	  
+	            	  
+	            	  
+	                  // get an image from the camera
+	            	  /*cameraObject.takePicture(null, null,mPicture);
+	            	  //show the button retake and validate
+	            	  /*butonRetake.setVisibility(View.VISIBLE);
+	            	  butonValider.setVisibility(View.VISIBLE);
+	            	  captureButton.setVisibility(View.INVISIBLE);
+	            	  Enregistrer_Video.this.imagePrise=true;*/
+	            	  //cameraObject.release();
+	              
+	          }
+	      );
+
+	      
+	      //add listener to valdate button
+	      butonValider.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				saveVideo();
+				if(MainActivity.IsvueConsulter==false){
+       			   
+			        AlertTrue OK=new AlertTrue(Enregistrer_Video.this);
+			        OK.setTitle("vidéo joutée à votre cahier !");
+			        OK.show();	
+				}else{
+						Intent i;
+				       i= new Intent(Enregistrer_Video.this,ConsultationActivity.class);
+				       MainActivity.IsvueConsulter=false;
+				       startActivity(i);
+				}
+
+				}});  
+	      butonPlay.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					try {
+						playVideo();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			        
+
+					}});  
+	       
+	   }
+/* ** Create a file Uri for saving the video
+ *  */
+	   private Uri getOutputMediaFileUri(int type){
+	         return Uri.fromFile(getOutputMediaFile(type));
+	   }
+
+	   /** Create a File for saving an image */
+	   private File getOutputMediaFile(int type){
+	       // To be safe, you should check that the SDCard is mounted
+	       // using Environment.getExternalStorageState() before doing this.
+		  // on recupère l'année courante car /CLASSE_AnneeCourante/
+	       Calendar calendar = Calendar.getInstance();
+	       int year = calendar.get(Calendar.YEAR);
+	       
+	       File mediaStorageDir = new File(Environment.getExternalStorageDirectory()+"/"+"CahierDeSon"+"/"+MainActivity.eleveConnecte.getClasse()+"_"+year+"/"+MainActivity.eleveConnecte.getPrenom()+"/"+"Video");
+	       // Create the storage directory if it does not exist
+	   
+	       if (! mediaStorageDir.exists()){
+	           if (! mediaStorageDir.mkdirs()){
+	               Log.d("chier de son", "failed to create directory");
+	               return null;
+	           }
+	       }
+	       // Create a media file name with grapheme name.jpg
+	       //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+	       File mediaFile;
+	       if(type == MEDIA_TYPE_VIDEO) {
+	    	lienVideo=mediaStorageDir.getPath() + File.separator + MainActivity.moduleCourant.getGrapheme() + ".mp4";
+	        mediaFile = new File(lienVideo);
+	    
+	       }
+	       else{
+	           return null;
+	       }
+
+	       return mediaFile;
+	   }
+	   
+	   
+	   @Override
+	   protected void onPause() {
+	       super.onPause();
+	       releaseMediaRecorder();       //release MediaRecorder first
+	       releaseCamera();              // release the camera immediately on pause event
+	   }
+
+	   private void releaseMediaRecorder(){
+	       if (mMediaRecorder != null) {
+	           mMediaRecorder.reset();   // clear recorder configuration
+	           mMediaRecorder.release(); // release the recorder object
+	           mMediaRecorder = null;
+	           cameraObject.lock();           // lock camera for later use
+	       }
+	   }
+
+	   private void releaseCamera(){
+	       if (cameraObject != null){
+	    	   cameraObject.release();        // release the camera for other applications
+	    	   cameraObject = null;
+	       }
+	   }
+	   
+	  
+	   
+	   /* Checks if external storage is available for read and write */
+	   public boolean isExternalStorageWritable() {
+	       String state = Environment.getExternalStorageState();
+	       if (Environment.MEDIA_MOUNTED.equals(state)) {
+	           return true;
+	       }
+	       return false;
+	   }
+	   
+	  
+
+	   
+
+	   /****Préparer la caméra pour capturer de video***/
+	   
+	   private boolean prepareVideoRecorder(){
+
+		   // cameraObject = getCameraInstance();
+		    //playVideoView.setVisibility(View.INVISIBLE);
+		    butonPlay.setVisibility(View.INVISIBLE);
+			playVideoView.setVisibility(View.INVISIBLE);
+		    showCamera.setVisibility(View.VISIBLE);
+		    mMediaRecorder = new MediaRecorder();
+		   
+		    mMediaRecorder.setCamera(cameraObject);  
+		    
+
+		    // Step 2: Set sources
+		    /*mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+		    mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+		    */
+		    mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+		    mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+		    //mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+		    mMediaRecorder.setAudioEncodingBitRate(AudioFormat.ENCODING_PCM_16BIT);
+		    mMediaRecorder.setMaxDuration(8000); //durée de la vidéo 8 secondes
+		    // Step 3: Set a CamcorderProfile (requires API Level 8 or higher)
+		    mMediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH));
+		 // Step 3: Set output format and encoding (for versions prior to API Level 8)
+		    // Step 4: Set output file
+		    mMediaRecorder.setOutputFile(getOutputMediaFile(MEDIA_TYPE_VIDEO).toString());
+
+		    // Step 5: Set the preview output
+
+		    
+		    mMediaRecorder.setPreviewDisplay(showCamera.getSurfaceHolder().getSurface());
+		    
+		    
+		    // Step 6: Prepare configured MediaRecorder
+		    try {
+		    	cameraObject.lock();
+		    	cameraObject.unlock();
+		    	//add listener to record, if time recordinf is finished
+		    	mMediaRecorder.setOnInfoListener(infoListener);
+		        mMediaRecorder.prepare();
+		    } catch (IllegalStateException e) {
+		        Log.d("media recording", "IllegalStateException preparing MediaRecorder: " + e.getMessage());
+		        releaseMediaRecorder();
+		        return false;
+		    } catch (IOException e) {
+		        Log.d("media recording", "IOException preparing MediaRecorder: " + e.getMessage());
+		        releaseMediaRecorder();
+		        return false;
+		    }
+		    return true;
+		}	   
+	 
+/**
+ * permet d'ecouter l'evennement, si la durée d'enregistrement est depassée (8 secondes)
+ */
+
+		private MediaRecorder.OnInfoListener infoListener = new MediaRecorder.OnInfoListener() {
+	        @Override
+	        public void onInfo(MediaRecorder mr, int what, int extra) {
+	        	
+	        	if(what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED){
+	        		//stopRecorder();
+	        		// on affiche les boutons ecouter et sauvegarder
+	        		// on désactive le micro
+	        	captureButton.setImageResource(R.drawable.record);
+				
+				butonPlay.setVisibility(View.VISIBLE);
+				butonValider.setVisibility(View.VISIBLE);
+		        isRecording=false;
+				//statusrecord=0;
+	        		
+	            Toast.makeText(Enregistrer_Video.this, "Temps d'enregistrement fini ", Toast.LENGTH_SHORT).show();
+	        }
+	      }
+	    };
+	   
+	    public void onBackPressed(){
+			
+			finish();
+			Intent i;
+	        i= new Intent(this,Accueil.class);
+	        startActivity(i);
+		}
+	    /**
+ * permet d'enregistrer le lien de le video dans la base de données
+ */
+public void saveVideo(){
+	//on modifie le lien de video dans le module courant
+	MainActivity.moduleCourant.setLienVideo(lienVideo);
+	ModulesBDD M = new ModulesBDD(Enregistrer_Video.this);
+	M.open();
+	if(M.updateModules(MainActivity.moduleCourant.getGrapheme(),MainActivity.eleveConnecte.getPrenom(),MainActivity.moduleCourant)){
+	sauvegarder=true;
+	Toast.makeText(Enregistrer_Video.this,"vidéo sauvegardée", Toast.LENGTH_SHORT).show();
+	}
+	M.close();
+	
+  }
+
+/**
+ * permet de supprimer la video deja enregistrée
+ */
+
+public void deleteVideo(){
+	 sauvegarder=false;
+	 File fileout = new File(lienVideo);
+	   	
+	   	if(fileout!= null )
+	   	{
+	   		fileout.delete();
+	   		//statusmicon=0;
+	   	}
+	
+}
+
+/**
+ * permet de demarrer la lecture de vidéo prise
+ * @throws Exception
+ */
+public void playVideo() throws Exception
+{
+	if(isPlaying==false){
+
+	  	playVideoView.setVisibility(View.VISIBLE);
+		playVideoView.setVideoPath(this.lienVideo);
+		showCamera.setVisibility(View.INVISIBLE);
+		playVideoView.start();
+		//preview.addView(child)
+		isPlaying=true;
+		this.butonPlay.setImageResource(R.drawable.pause);
+	//si c'est en mode lecture et q il a cliqué sur pause on stop la video
+	}else if (isPlaying){
+		
+		playVideoView.stopPlayback();
+		this.butonPlay.setImageResource(R.drawable.play);
+		isPlaying=false;
+	}
+	}
+		
+
+
+
+
+
+	    
+/**
+ * permet d'ajouter les listener à chauque bouton de la barra de menu
+ */
+private void ActionnerBoutonMenu() {
+	  	// TODO Auto-generated method stub
+		  
+	       ImageButton btnImage=(ImageButton) findViewById(R.id.boutonImage);
+	       ImageButton btnImageReferente=(ImageButton) findViewById(R.id.boutonReferente);
+	       ImageButton btnGrapheme=(ImageButton) findViewById(R.id.boutonGrapheme);
+	       ImageButton btnaccueil= (ImageButton) findViewById(R.id.boutonHome);
+	       ImageButton btnSon=(ImageButton) findViewById(R.id.boutonSon);
+	       btnSon.setOnClickListener(new BoutonMenuListener(Enregistrer_Son.class));
+	       btnImage.setOnClickListener(new BoutonMenuListener(Enregistrer_Photo.class));
+	       btnImageReferente.setOnClickListener(new BoutonMenuListener(Enregistrer_Image_Referente.class));
+	       btnGrapheme.setOnClickListener(new BoutonMenuListener(Enregistrer_Grapheme.class));
+	       btnaccueil.setOnClickListener(new BoutonMenuListener(Accueil.class));
+		   
+	  }
+	   
+	   
+	   /**
+	    * classe pour actionne les bouton de la barre de menu
+	    * @author Ammoula
+	    *
+	    */
+	   private class BoutonMenuListener implements View.OnClickListener{
+		   
+			private Class<?> Classe;
+			public BoutonMenuListener(Class<?> c){
+				super();
+				Classe=c;
+			}  
+		
+			@Override
+			public void onClick(View v){
+				// TODO Auto-generated method stub
+				// s il a pris la photo et n as pas enregistrer on lui propose d'enregistrer
+				if(Enregistrer_Video.this.videoPrise==true && Enregistrer_Video.this.sauvegarder==false ){
+					// boite de message voulez vous sauvegarder ? Yes No 
+					this.creerConfirmation();
+					AlertDialog alert = confirmation.create();
+				    alert.show();
+				}else if(isRecording){
+					Toast.makeText(Enregistrer_Video.this,"il faut finir l'enregistrement !", Toast.LENGTH_SHORT).show();
+				}else{
+					 
+		       	 Intent intent = new Intent(Enregistrer_Video.this,Classe);
+		       	 //Toast.makeText(Enregistrer_Video.this,"activite destinatrice"+Classe.toString(), Toast.LENGTH_SHORT).show();
+				 startActivity(intent);
+					//overridePendingTransition(R.anim.slide_in, R.anim.slide_out);					
+				}
+				
+		    }
+	   
+	   public void creerConfirmation(){
+		   confirmation = new AlertDialog.Builder(Enregistrer_Video.this);
+			confirmation.setTitle("Confirmation !");
+			confirmation.setMessage("Vouler vous sauvegardez la photo prise ?");
+	        ImageView image=new ImageView(Enregistrer_Video.this);
+	       image.setImageResource(R.drawable.ajouter);
+	       confirmation.setView(image);
+	       confirmation.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+	       
+	         @Override
+	         public void onClick(DialogInterface dialog, int which) {
+	               
+	              // on enregistre la photo dans la bd et sur le disque
+	       	    saveVideo();
+	            dialog.dismiss();
+	            
+	            Toast.makeText(Enregistrer_Video.this,"vidéo sauvegardée", Toast.LENGTH_SHORT).show();
+	           
+	      	    Intent intent = new Intent(Enregistrer_Video.this,Classe);
+	      	    //Toast.makeText(Enregistrer_Video.this,"activite destinatrice"+Classe.toString(), Toast.LENGTH_SHORT).show();
+				startActivity(intent);
+				overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+	         }
+	       
+	      });
+	       
+	       
+	       confirmation.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+	       
+	         @Override
+	         public void onClick(DialogInterface dialog, int which) {
+	       	  //on ne fait rien on passe à la vu demandée
+	       	    dialog.dismiss();
+	       	    deleteVideo();
+	       	    Toast.makeText(Enregistrer_Video.this,"video supprimée", Toast.LENGTH_SHORT).show();
+	       	    
+	       	    // on va au menu accueil
+	       	    Intent intent = new Intent(Enregistrer_Video.this,Classe);
+	       	   // Toast.makeText(Enregistrer_Video.this,"activite destinatrice"+Classe.toString(), Toast.LENGTH_SHORT).show();
+					startActivity(intent);
+				   // overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+	             
+	             
+	         }
+	       
+	      });
+	      
+		
+	   }
+	   
+	   }
+	   	   
+	   
+	}
+

@@ -8,6 +8,13 @@
 package com.example.cahierdeson;
 
 public final class R {
+    public static final class anim {
+        public static final int slide_in=0x7f040000;
+        public static final int slide_out=0x7f040001;
+    }
+    public static final class array {
+        public static final int classes_array=0x7f070000;
+    }
     public static final class attr {
     }
     public static final class dimen {
@@ -17,25 +24,204 @@ public final class R {
          screen margins) for sw720dp devices (e.g. 10" tablets) in landscape here.
     
          */
-        public static final int activity_horizontal_margin=0x7f040000;
-        public static final int activity_vertical_margin=0x7f040001;
+        public static final int activity_horizontal_margin=0x7f050000;
+        public static final int activity_vertical_margin=0x7f050001;
+        public static final int boutonRadioHeight=0x7f050006;
+        public static final int boutonRadioWidth=0x7f050007;
+        public static final int imageBorelHeight=0x7f050004;
+        public static final int imageBorelWidth=0x7f050005;
+        public static final int layoutMarginTop=0x7f050003;
+        public static final int textSize=0x7f050002;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int ajouter=0x7f020000;
+        public static final int aucune=0x7f020001;
+        public static final int borel_a=0x7f020002;
+        public static final int borel_an=0x7f020003;
+        public static final int borel_b=0x7f020004;
+        public static final int borel_ch=0x7f020005;
+        public static final int borel_d=0x7f020006;
+        public static final int borel_f=0x7f020007;
+        public static final int borel_i=0x7f020008;
+        public static final int borel_o=0x7f020009;
+        public static final int cam=0x7f02000a;
+        public static final int camera=0x7f02000b;
+        public static final int camera2=0x7f02000c;
+        public static final int check=0x7f02000d;
+        public static final int consulter=0x7f02000e;
+        public static final int crayon=0x7f02000f;
+        public static final int dconnexion=0x7f020010;
+        public static final int ecouter=0x7f020011;
+        public static final int enregistrer=0x7f020012;
+        public static final int error=0x7f020013;
+        public static final int fond=0x7f020014;
+        public static final int fond_cadre=0x7f020015;
+        public static final int fond_seul=0x7f020016;
+        public static final int grapheme=0x7f020017;
+        public static final int grapheme2=0x7f020018;
+        public static final int happy=0x7f020019;
+        public static final int ic_launcher=0x7f02001a;
+        public static final int insc=0x7f02001b;
+        public static final int kid=0x7f02001c;
+        public static final int lbg=0x7f02001d;
+        public static final int menu=0x7f02001e;
+        public static final int micc=0x7f02001f;
+        public static final int micoff=0x7f020020;
+        public static final int micon=0x7f020021;
+        public static final int micro=0x7f020022;
+        public static final int micro2=0x7f020023;
+        public static final int modifson=0x7f020024;
+        public static final int next=0x7f020025;
+        public static final int ok=0x7f020026;
+        public static final int papyrus=0x7f020027;
+        public static final int pause=0x7f020028;
+        public static final int phot=0x7f020029;
+        public static final int photbc=0x7f02002a;
+        public static final int play=0x7f02002b;
+        public static final int playc=0x7f02002c;
+        public static final int playvideo=0x7f02002d;
+        public static final int precedent=0x7f02002e;
+        public static final int profil=0x7f02002f;
+        public static final int quizz=0x7f020030;
+        public static final int recherche=0x7f020031;
+        public static final int recherche2=0x7f020032;
+        public static final int recherche3=0x7f020033;
+        public static final int recherche4=0x7f020034;
+        public static final int recherche_a=0x7f020035;
+        public static final int record=0x7f020036;
+        public static final int referente=0x7f020037;
+        public static final int retake=0x7f020038;
+        public static final int sad=0x7f020039;
+        public static final int save=0x7f02003a;
+        public static final int style_field=0x7f02003b;
+        public static final int style_label_connecte=0x7f02003c;
+        public static final int styles=0x7f02003d;
+        public static final int suivant=0x7f02003e;
+        public static final int take=0x7f02003f;
+        public static final int video=0x7f020040;
+        public static final int video2=0x7f020041;
     }
     public static final class id {
-        public static final int action_settings=0x7f080000;
+        public static final int Accueil=0x7f0a002b;
+        public static final int BoutonInsc=0x7f0a0012;
+        public static final int BoutonNxt=0x7f0a0013;
+        public static final int ButtonBlue=0x7f0a000d;
+        public static final int ButtonGreen=0x7f0a000c;
+        public static final int ButtonGrey=0x7f0a000e;
+        public static final int ButtonOrange=0x7f0a000a;
+        public static final int ButtonRed=0x7f0a0009;
+        public static final int ButtonYellow=0x7f0a000b;
+        public static final int ImageBorel2=0x7f0a004e;
+        public static final int TextView01=0x7f0a001b;
+        public static final int action_settings=0x7f0a0055;
+        public static final int autoCompleteTextView1=0x7f0a0010;
+        public static final int boutonAjouterImage=0x7f0a0053;
+        public static final int boutonEcouterson=0x7f0a004a;
+        public static final int boutonEnregistrer=0x7f0a0048;
+        public static final int boutonGrapheme=0x7f0a003f;
+        public static final int boutonHome=0x7f0a0030;
+        public static final int boutonImage=0x7f0a003c;
+        public static final int boutonPlay=0x7f0a004b;
+        public static final int boutonProfil=0x7f0a0052;
+        public static final int boutonReferente=0x7f0a003b;
+        public static final int boutonSaveson=0x7f0a0049;
+        public static final int boutonSon=0x7f0a003a;
+        public static final int boutonVideo=0x7f0a0038;
+        public static final int btnBorel=0x7f0a0024;
+        public static final int btncam=0x7f0a002a;
+        public static final int btnplayvideo=0x7f0a002c;
+        public static final int btnprecedent=0x7f0a001e;
+        public static final int btnsuivant=0x7f0a0028;
+        public static final int btntof=0x7f0a0026;
+        public static final int button1=0x7f0a0037;
+        public static final int buttonChercherGrapheme=0x7f0a0031;
+        public static final int buttonProfil=0x7f0a0032;
+        public static final int buttonValiderGrapheme=0x7f0a0039;
+        public static final int buttonWhite=0x7f0a000f;
+        public static final int camera_preview=0x7f0a0044;
+        public static final int camera_preview2=0x7f0a0040;
+        public static final int consultation=0x7f0a0005;
+        public static final int deconnexion=0x7f0a0003;
+        public static final int enregistrement=0x7f0a0001;
+        public static final int enregistrerGrapheme=0x7f0a002d;
+        public static final int enregistrerPhoto=0x7f0a0046;
+        public static final int enregistrerPhoto2=0x7f0a0042;
+        public static final int grapheme=0x7f0a002f;
+        public static final int graphemeCourant=0x7f0a003e;
+        public static final int graphemeson=0x7f0a0047;
+        public static final int imageBorel=0x7f0a0023;
+        public static final int imageBorel1=0x7f0a004f;
+        public static final int imageButton1=0x7f0a0019;
+        public static final int imageButton2=0x7f0a001c;
+        public static final int imageGrapheme=0x7f0a0025;
+        public static final int imageView1=0x7f0a0006;
+        public static final int imageView2=0x7f0a0033;
+        public static final int labelEleveConnecte=0x7f0a0007;
+        public static final int label_grapheme=0x7f0a002e;
+        public static final int lay_l_eye=0x7f0a0015;
+        public static final int lay_mouth=0x7f0a0017;
+        public static final int lay_noise=0x7f0a0018;
+        public static final int lay_r_eye=0x7f0a0016;
+        public static final int lay_smile=0x7f0a0008;
+        public static final int linearLayout1=0x7f0a0022;
+        public static final int linearLayout2=0x7f0a0020;
+        public static final int listModule=0x7f0a0034;
+        public static final int ln=0x7f0a0014;
+        public static final int mediaController1=0x7f0a0035;
+        public static final int modifson=0x7f0a0027;
+        public static final int profil=0x7f0a0000;
+        public static final int quizz=0x7f0a0004;
+        public static final int radio1=0x7f0a0051;
+        public static final int radio2=0x7f0a0050;
+        public static final int radioGroup1=0x7f0a004d;
+        public static final int recherche=0x7f0a0002;
+        public static final int rechercheQuizz=0x7f0a0054;
+        public static final int retake=0x7f0a0045;
+        public static final int retake2=0x7f0a0041;
+        public static final int sonGrapheme=0x7f0a0021;
+        public static final int spinner1=0x7f0a001a;
+        public static final int take=0x7f0a0043;
+        public static final int take2=0x7f0a003d;
+        public static final int textGrapheme=0x7f0a001f;
+        public static final int textView1=0x7f0a0011;
+        public static final int textView2=0x7f0a001d;
+        public static final int videoGrapheme=0x7f0a0029;
+        public static final int videoView=0x7f0a004c;
+        public static final int videoView1=0x7f0a0036;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
+        public static final int accueil=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int activity_profil=0x7f030002;
+        public static final int activity_subscribe=0x7f030003;
+        public static final int consultation_activity=0x7f030004;
+        public static final int consulter_grapheme=0x7f030005;
+        public static final int consulter_module=0x7f030006;
+        public static final int element_list_bouton=0x7f030007;
+        public static final int enregistrer_grapheme=0x7f030008;
+        public static final int enregistrer_image_referente=0x7f030009;
+        public static final int enregistrer_photo=0x7f03000a;
+        public static final int enregistrer_son=0x7f03000b;
+        public static final int enregistrer_video=0x7f03000c;
+        public static final int quizz=0x7f03000d;
     }
     public static final class menu {
-        public static final int main=0x7f070000;
+        public static final int main=0x7f090000;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
-        public static final int app_name=0x7f050000;
-        public static final int hello_world=0x7f050002;
+        public static final int action_settings=0x7f060001;
+        public static final int app_name=0x7f060000;
+        public static final int boutonHome=0x7f060006;
+        public static final int boutonImage=0x7f060004;
+        public static final int boutonSon=0x7f060008;
+        public static final int boutonTelecharger=0x7f060005;
+        public static final int boutonVideo=0x7f060007;
+        public static final int hello_world=0x7f06000c;
+        public static final int label_grapheme=0x7f060002;
+        public static final int label_recherche_grapheme=0x7f060003;
+        public static final int title_activity_accueil=0x7f06000a;
+        public static final int title_activity_profil=0x7f060009;
+        public static final int title_activity_subscribe=0x7f06000b;
     }
     public static final class style {
         /** 
@@ -59,10 +245,10 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f060000;
+        public static final int AppBaseTheme=0x7f080000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f060001;
+        public static final int AppTheme=0x7f080001;
     }
 }

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:orientation="horizontal" >
+
+             <ImageButton
+                 android:id="@+id/boutonReferente"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignLeft="@+id/boutonSon"
+                 android:layout_alignParentBottom="true"
+                 android:layout_marginBottom="51dp"
+                 android:src="@drawable/referente" />
+
+             <ImageButton
+                 android:id="@+id/boutonGrapheme"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_above="@+id/boutonReferente"
+                 android:layout_alignLeft="@+id/boutonReferente"
+                 android:layout_marginBottom="25dp"
+                 android:src="@drawable/grapheme" />
+
+    <TextView
+        android:id="@+id/graphemeCourant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/labelEleveConnecte"
+        android:layout_alignBottom="@+id/labelEleveConnecte"
+        android:layout_alignRight="@+id/enregistrerPhoto"
+        android:layout_marginRight="53dp"
+      
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_alignBottom="@+id/boutonReferente"
+        android:layout_marginLeft="105dp"
+        android:layout_toRightOf="@+id/retake" >
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/take"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/graphemeCourant"
+        android:layout_alignTop="@+id/camera_preview"
+        android:src="@drawable/take" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="21dp"
+        android:src="@drawable/kid" />
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/imageView1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <ImageButton
+        android:id="@+id/enregistrerPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/boutonReferente"
+        android:layout_marginRight="70dp"
+        android:layout_toLeftOf="@+id/boutonReferente"
+        android:src="@drawable/save" />
+
+    <ImageButton
+        android:id="@+id/retake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignTop="@+id/enregistrerPhoto"
+        android:layout_marginLeft="33dp"
+        android:src="@drawable/retake" />
+
+    <ImageButton
+        android:id="@+id/boutonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/take"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/menu" />
+
+    <ImageButton
+        android:id="@+id/boutonVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonSon"
+        android:layout_alignLeft="@+id/boutonSon"
+        android:src="@drawable/video" />
+
+    <ImageButton
+        android:id="@+id/boutonSon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/enregistrerPhoto"
+        android:layout_alignLeft="@+id/boutonHome"
+        android:src="@drawable/micro" />
+
+</RelativeLayout>

@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/fond"
+     >
+
+    <ImageButton
+        android:id="@+id/profil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/enregistrement"
+        android:layout_marginBottom="59dp"
+        android:layout_toRightOf="@+id/recherche"
+        android:background="@drawable/profil" 
+          android:padding="50dp"/>
+
+    <ImageButton
+        android:id="@+id/deconnexion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/recherche"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="77dp"
+        android:background="@drawable/dconnexion"
+          android:padding="50dp" />
+
+       <ImageView
+           android:id="@+id/imageView1"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentTop="true"
+           android:layout_marginTop="23dp"
+           android:layout_toLeftOf="@+id/labelEleveConnecte"
+           android:background="@drawable/kid" 
+            android:padding="50dp"/>
+
+       <TextView
+           android:id="@+id/labelEleveConnecte"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@+id/imageView1"
+           android:layout_alignLeft="@+id/consultation"
+           android:layout_marginBottom="21dp"
+           android:layout_marginLeft="27dp"
+           android:text="Large Text"
+           android:textAppearance="?android:attr/textAppearanceLarge"
+           android:textSize="@android:dimen/app_icon_size" />
+
+       <ImageButton
+           android:id="@+id/enregistrement"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignLeft="@+id/recherche"
+           android:layout_alignTop="@+id/consultation"
+           android:background="@drawable/enregistrer"
+           android:padding="100dp" />
+
+       <ImageButton
+           android:id="@+id/quizz"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignTop="@+id/recherche"
+           android:layout_toRightOf="@+id/imageView1"
+           android:background="@drawable/quizz"
+           android:padding="100dp" />
+
+       <ImageButton
+           android:id="@+id/consultation"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:layout_below="@+id/labelEleveConnecte"
+           android:layout_marginLeft="172dp"
+           android:layout_marginTop="29dp"
+           android:background="@drawable/consulter"
+           android:padding="100dp" />
+
+       <ImageButton
+           android:id="@+id/recherche"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/enregistrement"
+           android:layout_marginRight="230dp"
+           android:layout_marginTop="50dp"
+           android:layout_toLeftOf="@+id/deconnexion"
+           android:background="@drawable/recherche_a"
+           android:padding="100dp" />
+   
+</RelativeLayout>

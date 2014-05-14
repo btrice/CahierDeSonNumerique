@@ -1,0 +1,136 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graphemeson"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:orientation="vertical"
+    tools:context="vues.Enregistrer_Son" >
+
+    <requestFocus android:layout_width="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignRight="@+id/labelEleveConnecte"
+        android:layout_centerVertical="true" >
+
+        <ImageButton
+            android:id="@+id/boutonEnregistrer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/micoff"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/boutonEcouterson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/play"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/boutonSaveson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:src="@drawable/save"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/kid"
+        android:padding="50dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/labelEleveConnecte"
+        android:orientation="vertical" >
+
+        <ImageButton
+            android:id="@+id/boutonVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/video"
+            android:layout_marginTop="70dp"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/boutonImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:background="@null"
+            android:src="@drawable/camera"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/boutonReferente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:background="@null"
+            android:src="@drawable/referente"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/boutonGrapheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="14dp"
+            android:layout_weight="1.04"
+            android:background="@null"
+            android:src="@drawable/grapheme"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/graphemeCourant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView1"
+        android:layout_toRightOf="@+id/imageView1"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/graphemeCourant"
+        android:layout_alignBottom="@+id/graphemeCourant"
+        android:layout_marginRight="173dp"
+        android:layout_toLeftOf="@+id/linearLayout2"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <ImageButton
+        android:id="@+id/boutonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/labelEleveConnecte"
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:background="@null"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/menu"
+        tools:ignore="ContentDescription" />
+
+</RelativeLayout>

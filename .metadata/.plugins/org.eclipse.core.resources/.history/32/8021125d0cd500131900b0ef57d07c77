@@ -1,0 +1,624 @@
+package vues;
+
+import com.example.cahierdeson.MainActivity;
+import com.example.cahierdeson.R;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;  
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
+import BD.ModulesBDD;
+import Modeles.Eleve;
+import Modeles.Module;
+import android.util.Log;
+
+public class ConsultationActivity extends Activity{
+
+	/*public static Eleve eleveConnecte;
+	public static Module moduleCourant;*/
+	public static ArrayList<Module> toutlesmodules; 
+	private TextView graph;
+	private VideoView video;
+	private ImageButton son, menu, suiv, pred, tofR, cam, tofB, modson,btnplayvideo;
+	private ImageView image,imageB;
+	private MediaPlayer play;
+	private int is_son=0; // (o or 1)   pour gerer l'image play/pause à afficher
+	private MediaController media_Controller;
+	private  AlertDialog.Builder  builder;
+	private boolean longClickActive = false; // detecter si l'utilisateur appuye longtemps 
+	
+	 protected void onCreate(Bundle savedInstanceState) {
+	        super.onCreate(savedInstanceState);
+	        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+	        setContentView(R.layout.consultation_activity);
+	       
+	        
+	       
+	        ModulesBDD M = new ModulesBDD(ConsultationActivity.this);
+	        M.open();
+	        // recuperation de tous les modules
+		       toutlesmodules = M.getAllModulesEleve(MainActivity.eleveConnecte.getPrenom());
+		       					
+		   int i=0;
+		       while(i<toutlesmodules.size())
+		       {
+		    	   Log.i("TEST ALL MODULE:",toutlesmodules.get(i).getGrapheme());
+		    	   i++;
+		       }
+		   M.close();
+		   
+	      //  moduleCourant=M.getModuleWith("ivv","Moussa");
+	       
+	       
+	        
+	        graph =(TextView)findViewById(R.id.textGrapheme);
+	        son = (ImageButton)findViewById(R.id.sonGrapheme);
+	        suiv = (ImageButton)findViewById(R.id.btnsuivant);
+	        pred = (ImageButton)findViewById(R.id.btnprecedent);
+	        image = (ImageView) findViewById(R.id.imageGrapheme);
+	        imageB = (ImageView) findViewById(R.id.imageBorel);
+	        video = (VideoView)findViewById(R.id.videoGrapheme);
+	        menu = (ImageButton)findViewById(R.id.Accueil);
+	        tofR = (ImageButton)findViewById(R.id.btntof);
+	        tofB  = (ImageButton) findViewById(R.id.btnBorel);
+	        cam = (ImageButton)findViewById(R.id.btncam);
+	        modson = (ImageButton)findViewById(R.id.modifson);
+	        btnplayvideo = (ImageButton)findViewById(R.id.btnplayvideo);
+	        tofB.setVisibility(View.GONE);
+	        tofR.setVisibility(View.GONE);
+	        cam.setVisibility(View.GONE);
+	        modson.setVisibility(View.GONE);
+	        getInit();
+	      
+	       // Modification
+	        
+	        // detection si l'utilisateur appuie longtemps sur l'image référente
+	        image.setOnTouchListener(new View.OnTouchListener() {
+
+	            private static final int MIN_CLICK_DURATION = 1000;
+	            private long startClickTime;
+
+	            @Override
+	            public boolean onTouch(View v, MotionEvent event) {
+
+	                switch (event.getAction()) {
+	                case MotionEvent.ACTION_UP:
+	                    longClickActive = false;
+	                    break;
+	                case MotionEvent.ACTION_DOWN:
+	                    if (longClickActive == false) {
+	                        longClickActive = true;
+	                        startClickTime = Calendar.getInstance().getTimeInMillis();
+	                    }
+	                    break;
+	                case MotionEvent.ACTION_MOVE:
+	                    if (longClickActive == true) {
+	                        long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+	                        if (clickDuration >= MIN_CLICK_DURATION) {
+	                        	boite_de_dialogue("Image Référente","Voulez vous modifier l'image du graphème "+MainActivity.moduleCourant.getGrapheme()+"?",3);
+	        					AlertDialog alert = builder.create();
+	        				    alert.show();
+	                            longClickActive = false;
+	                        }
+	                    }
+	                    break;
+	                }
+	                return true;
+	            }
+	        });
+	        
+	        
+	        
+	        //detection si l'utilisateur appuie longtemps sur l'image borel
+	        imageB.setOnTouchListener(new View.OnTouchListener() {
+
+	            private static final int MIN_CLICK_DURATION = 1000;
+	            private long startClickTime;
+
+	            @Override
+	            public boolean onTouch(View v, MotionEvent event) {
+
+	                switch (event.getAction()) {
+	                case MotionEvent.ACTION_UP:
+	                    longClickActive = false;
+	                    break;
+	                case MotionEvent.ACTION_DOWN:
+	                    if (longClickActive == false) {
+	                        longClickActive = true;
+	                        startClickTime = Calendar.getInstance().getTimeInMillis();
+	                    }
+	                    break;
+	                case MotionEvent.ACTION_MOVE:
+	                    if (longClickActive == true) {
+	                        long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+	                        if (clickDuration >= MIN_CLICK_DURATION) {
+	                        	boite_de_dialogue("Image Borel","Voulez vous modifier l'image du graphème "+MainActivity.moduleCourant.getGrapheme()+"?",4);
+	                			AlertDialog alert = builder.create();
+	                		    alert.show();
+	                            longClickActive = false;
+	                        }
+	                    }
+	                    break;
+	                }
+	                return true;
+	            }
+	        });
+	        
+	     
+	        
+	        //detection si l'utilisateur appuie longtemps sur le bouton son
+	        video.setOnTouchListener(new View.OnTouchListener() {
+
+	            private static final int MIN_CLICK_DURATION = 1000;
+	            private long startClickTime;
+
+	            @Override
+	            public boolean onTouch(View v, MotionEvent event) {
+
+	                switch (event.getAction()) {
+	                case MotionEvent.ACTION_UP:
+	                    longClickActive = false;
+	                    break;
+	                case MotionEvent.ACTION_DOWN:
+	                    if (longClickActive == false) {
+	                        longClickActive = true;
+	                        startClickTime = Calendar.getInstance().getTimeInMillis();
+	                    }
+	                    break;
+	                case MotionEvent.ACTION_MOVE:
+	                    if (longClickActive == true) {
+	                        long clickDuration = Calendar.getInstance().getTimeInMillis() - startClickTime;
+	                        if (clickDuration >= MIN_CLICK_DURATION) {
+	                        	boite_de_dialogue("Vidéo","Voulez vous modifier la vidéo du graphème "+MainActivity.moduleCourant.getGrapheme()+"?",2);
+	                			AlertDialog alert = builder.create();
+	                		    alert.show();
+	                            longClickActive = false;
+	                        }
+	                    }
+	                    break;
+	                }
+	                return true;
+	            }
+	        });
+	        
+	        // fin modification
+	        
+	        // boutton suivant
+	        suiv.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					if(position()!=toutlesmodules.size()-1)
+					{  
+						MainActivity.moduleCourant = toutlesmodules.get(position()+1);
+						
+					     getInit();
+						
+					}
+					
+					
+				}
+				
+	        });
+	        
+	        
+	        // boutton precedent
+	        pred.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					if(position()!=0)
+					{  
+						MainActivity.moduleCourant = toutlesmodules.get(position()-1);
+					
+					     getInit();
+						
+					}
+					
+					
+				}
+				
+	        });
+	        
+	        
+	        // Debut Ajout  
+	        
+	        // boutton image borel
+	        tofB.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					String t="Voulez vous enregistrer l'image borel du graphème "+MainActivity.moduleCourant.getGrapheme()+"?";
+					boite_de_dialogue("Image Borel",t,4);
+					AlertDialog alert = builder.create();
+				    alert.show();
+					//Toast.makeText(ConsultationActivity.this,"Lance activity enregistré image borel", Toast.LENGTH_LONG).show();
+					
+				}
+				
+	        });
+	        
+	        // boutton image borel
+	        tofR.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					String t="Voulez vous enregistrer l'image référente du graphème "+MainActivity.moduleCourant.getGrapheme()+"?";
+					boite_de_dialogue("Image Référente",t,3);
+					AlertDialog alert = builder.create();
+				    alert.show();
+					//Toast.makeText(ConsultationActivity.this,"Lance activity enregistré image referente", Toast.LENGTH_LONG).show();
+					
+				}
+				
+	        });
+	        
+	        // boutton cam
+	        cam.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					boite_de_dialogue("Vidéo","Voulez vous enregistrer la vidéo du graphème "+MainActivity.moduleCourant.getGrapheme()+"?",2);
+					AlertDialog alert = builder.create();
+				    alert.show();
+					//Toast.makeText(ConsultationActivity.this,"Lance activity enregistré video", Toast.LENGTH_LONG).show();
+					
+				}
+				
+	        });
+	        
+	        son.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					
+					       if(is_son==1)
+					       {
+								   try {
+										modson.setVisibility(View.VISIBLE);   
+									startPlay();
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+					       }
+					       else
+					       {
+					    	   boite_de_dialogue("Son","Voulez vous enregistrer le son du graphème "+MainActivity.moduleCourant.getGrapheme()+"?",1);
+					    	   AlertDialog alert = builder.create();
+					   	       alert.show();
+					   
+					    	   
+					       }
+					       
+					      
+					       
+					 	  
+				}
+	        });
+	        
+	        // modification du son
+        modson.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					
+					boite_de_dialogue("Son","Voulez vous modifier le son du graphème "+MainActivity.moduleCourant.getGrapheme()+"?",1);
+        			AlertDialog alert = builder.create();
+        		    alert.show();
+				}
+	        });
+	        
+	        // Fin Ajout
+				
+	        menu.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					 Intent intent = new Intent(ConsultationActivity.this,Accueil.class);
+					   startActivity(intent);
+				       overridePendingTransition(R.anim.slide_out,R.anim.slide_in);
+				       finish();
+					
+				}
+	        });
+					
+	        
+	 }
+	 
+	 public void startPlay() throws Exception
+	    {
+	    	if(play!=null)
+	    	{
+	    		try
+	    		{
+	    			play.release();
+	    		}catch( Exception e)
+	    		{
+	    			e.printStackTrace();
+	    		}
+	    	}
+	    	play = new MediaPlayer();
+	    	play.setDataSource(MainActivity.moduleCourant.getLienSon());
+	    	play.prepare();
+	    	play.start();
+	    	
+	    }
+	    
+	    public void stopPlayback()
+	    {
+	    	if(play.isPlaying())
+	          play.stop();
+	    	
+	    }
+	    
+	    public void getInit() {
+	    	
+	    	
+	    	 
+	    
+	    	 // on test s'il y'a plusieur modules on affiche suivant 
+	    	 // on affiche precedent ssi le graphème n'est pas le premier elements
+	    	    if(position()==toutlesmodules.size()-1)
+				{ 
+	    	    	if(suiv.getVisibility()==View.VISIBLE)
+					   suiv.setVisibility(View.GONE);
+				}
+	    	    else
+	    	    {
+	    	    	if(suiv.getVisibility()==View.GONE)
+	    	    	 suiv.setVisibility(View.VISIBLE);
+		        }
+	    	    
+	    	    if(position()==0)
+				{  
+	    	    	if(pred.getVisibility()==View.VISIBLE)
+					 pred.setVisibility(View.GONE);
+				}
+	    	    else
+	    	    {
+	    	       if(pred.getVisibility()==View.GONE)
+	    	    	pred.setVisibility(View.VISIBLE);
+	    	    }
+	    	    
+	    	
+	    	 // graphème
+	        graph.setText(MainActivity.moduleCourant.getGrapheme());
+	        
+	        // son
+	        if((MainActivity.moduleCourant.getLienSon()!="") && (new File(MainActivity.moduleCourant.getLienSon())).exists())
+		       {
+			       
+	        	       son.setImageResource(R.drawable.playc);
+			        	// le fichier audio existe 
+			        	is_son = 1;
+			        
+			        	 
+		       }
+		       else
+		       {
+		    	   // on change l'image du btn en micro pour lancer l'activity enregistré son
+		    		modson.setVisibility(View.GONE);
+		    	   son.setImageResource(R.drawable.micc);
+		    	   is_son = 0;
+		    	     }
+		       
+	        
+	        
+	        // image  referente
+	       if( (MainActivity.moduleCourant.getLienImageReferente()!="") && (new File(MainActivity.moduleCourant.getLienImageReferente()).exists()))
+	       {
+		       
+	    	   
+	        		 tofR.setVisibility(View.GONE);
+	        		 image.setVisibility(View.VISIBLE);
+		        	 
+		        	 Bitmap imap= decodeFile(new File(MainActivity.moduleCourant.getLienImageReferente()));
+		        	 imap =Bitmap.createScaledBitmap(imap,400,248,true); 
+		        	 image.setImageBitmap(imap);
+		        	 
+	       }
+	       else
+	       {
+	    	  
+	    	// on rend GONE l'imageView
+	    	     image.setVisibility(View.GONE);
+	    	   
+	    	   // on affiche le boutton qui lance l'activity photo
+	    		   tofR.setVisibility(View.VISIBLE);
+	    	   
+	       }
+	       
+	    // image  borel
+	       if((MainActivity.moduleCourant.getLienImageBorel()!="") && (new File(MainActivity.moduleCourant.getLienImageBorel())).exists())
+	       {
+		       
+	    	         tofB.setVisibility(View.GONE);
+	    	         imageB.setVisibility(View.VISIBLE);
+		        	 Bitmap imap= decodeFile(new File(MainActivity.moduleCourant.getLienImageBorel()));
+		        	 imap =Bitmap.createScaledBitmap(imap,400,248,true); 
+		        	 imageB.setImageBitmap(imap);
+		        	
+	       }
+	       else
+	       {
+	    	  
+	    	    // on rend GONE l'imageView 
+	    	      imageB.setVisibility(View.GONE);
+	    	   
+	    	   // on affiche le boutton qui lance l'activity photo borel
+	    		   tofB.setVisibility(View.VISIBLE);
+	    	   
+	       }
+	       
+	    	/* video */
+	      if((MainActivity.moduleCourant.getLienVideo()!="") && (new File(MainActivity.moduleCourant.getLienVideo())).exists()) 
+	      {
+	       
+	        	
+	        	cam.setVisibility(View.GONE);
+	        	video.setVisibility(View.VISIBLE);
+	        	media_Controller = new MediaController(this);
+		    	media_Controller.setAnchorView(video);
+		    	video.setMediaController(media_Controller); 
+		    	video.setVideoPath(MainActivity.moduleCourant.getLienVideo()); 
+		    	video.start(); 
+	        
+	      }
+	      else
+	       {
+	    	   
+	    	   // on rend GONE l'VideoView
+	    	   video.setVisibility(View.GONE);
+	    	  
+	    	// on affiche le boutton qui lance l'activity video
+	    	   cam.setVisibility(View.VISIBLE);
+	    	  
+	    	   
+	       }
+	    	
+	    }
+	    
+	    // pour gerer suivant et precedent
+	    
+  public int position()
+  {
+	  int i=0;
+      while(i<toutlesmodules.size())
+      {
+   	    if(toutlesmodules.get(i).getGrapheme().equalsIgnoreCase(MainActivity.moduleCourant.getGrapheme()) )
+   	    {
+   	    	return i;
+   	    }
+   	    i++;
+      }
+      
+      return -1;
+	  
+  }
+  // creation de l'image pour l'adapter à la View
+    private Bitmap decodeFile(File f){
+      try {
+          //decode image size
+          BitmapFactory.Options o = new BitmapFactory.Options();
+          o.inJustDecodeBounds = true;
+          BitmapFactory.decodeStream(new FileInputStream(f),null,o);              
+          //Find the correct scale value. It should be the power of 2.
+          final int REQUIRED_SIZE=70;
+          int width_tmp=o.outWidth, height_tmp=o.outHeight;
+          int scale=1;
+          while(true){
+              if(width_tmp/2<REQUIRED_SIZE || height_tmp/2<REQUIRED_SIZE)
+                  break;
+              width_tmp/=2;
+              height_tmp/=2;
+              scale++;
+          }
+
+          //decode with inSampleSize
+          BitmapFactory.Options o2 = new BitmapFactory.Options();
+          o2.inSampleSize=scale;
+          return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
+      } catch (FileNotFoundException e) {}
+      return null;
+  }
+   
+    
+    // en fonction de la valeur de i on saura quel activity lancé( son , vidéo, image )
+    public void boite_de_dialogue(String titre,String msg,final int i)
+    {
+    	
+    	builder = new AlertDialog.Builder(ConsultationActivity.this);
+        
+        builder.setTitle(titre);
+        builder.setMessage(msg);
+         
+        builder.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+         
+           @Override
+           public void onClick(DialogInterface dialog, int which) {
+               
+                Intent intent;
+                
+             switch(i)
+             {
+                   // case 1 on lance activity son
+               case 1:  
+            	   		intent = new Intent(ConsultationActivity.this,Enregistrer_Son.class);
+				        startActivity(intent);  
+				        finish();  
+				        break;
+				       
+				  // case 2 on lance activity video
+               case 2: intent = new Intent(ConsultationActivity.this,Enregistrer_Video.class);
+				 	   startActivity(intent);
+				 	   finish();
+				 	   break;
+				 	  
+				 	  // case 3 on lance image referente
+               case 3: intent = new Intent(ConsultationActivity.this,Enregistrer_Image_Referente.class);
+				 	   startActivity(intent); 
+				 	   finish();
+				 	   break;
+				 	  
+				 	 // case 4 on lance image borel
+               case 4: intent = new Intent(ConsultationActivity.this,Enregistrer_Photo.class);
+				 	   startActivity(intent);
+				 	   finish();
+				 	   break;
+				 	  
+			   default: break;
+             }
+            // dialog.dismiss();   
+ 			    
+           }
+         
+        });
+        builder.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+          
+               
+          	  
+          	    dialog.dismiss();
+                
+                
+            }
+          
+         });
+        
+       
+			
+         
+    }
+
+	    }

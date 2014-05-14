@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/enregistrerGrapheme"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/fond"
+    android:stretchColumns="2"
+    tools:context="vues.Enregistrer_Grapheme" >
+
+    <Button
+        android:id="@+id/buttonValiderGrapheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/label_grapheme"
+        android:layout_marginRight="261dp"
+        android:layout_toLeftOf="@+id/boutonVideo"
+        android:background="@drawable/ajouter" />
+
+    <TextView
+        android:id="@+id/label_grapheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/grapheme"
+        android:layout_alignLeft="@+id/grapheme"
+        android:layout_marginBottom="44dp"
+        android:text="@string/label_grapheme"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="40sp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/grapheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/imageView1"
+        android:background="@drawable/style_field"
+        android:ems="10"
+        android:scrollbars="horizontal|vertical"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/boutonVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/buttonValiderGrapheme"
+        android:layout_marginRight="15dp"
+        android:src="@drawable/video" />
+
+    <ImageButton
+        android:id="@+id/boutonSon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/boutonVideo"
+        android:layout_alignTop="@+id/grapheme"
+        android:src="@drawable/micro"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/boutonImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/boutonSon"
+        android:layout_below="@+id/boutonSon"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/camera" />
+
+    <ImageButton
+        android:id="@+id/boutonReferente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/boutonImage"
+        android:layout_marginTop="21dp"
+        android:layout_toRightOf="@+id/buttonValiderGrapheme"
+        android:src="@drawable/referente" />
+
+    <TextView
+        android:id="@+id/labelEleveConnecte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/label_grapheme"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="23dp"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="@android:dimen/app_icon_size" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/labelEleveConnecte"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="37dp"
+        android:src="@drawable/kid" />
+
+    <ImageButton
+        android:id="@+id/boutonHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/boutonVideo"
+        android:layout_toRightOf="@+id/buttonValiderGrapheme"
+        android:src="@drawable/menu" />
+
+</RelativeLayout>
